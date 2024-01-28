@@ -1,0 +1,148 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins',sans-serif;
+}
+
+body{
+    background: #081b29;
+}
+
+.header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 10%;
+    background-color: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+
+.navbar a{
+    font-size: 18px;
+    color: #ededed;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left:35px;
+
+}
+.navbar a:hover,
+.navbar a.active{
+    color: #00abf0
+}
+
+.about{
+    height: 50vh;
+    align-items:center;
+    padding:0 10%;
+    color:#ededed
+}
+.contact{
+    height: 50vh;
+    align-items:center;
+    padding:0 10%;
+    color:#ededed
+}
+.home{
+    display:flex;
+    height: 100vh;
+    align-items:center;
+    padding:0 10%;
+    color:#ededed
+}
+.qual{
+    display:flex;
+    height: 50vh;
+    align-items:center;
+    padding:0 10%;
+    color:#ededed
+    
+}
+.thank{
+    height: 50vh;
+    align-items:center;
+    padding:0 10%;
+    color:#ededed
+}
+
+.home-content{
+    max-width: 600px;
+}
+.home-content h1{
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.home-content h3{
+    font-size: 32px;
+    font-weight: 700;
+    color:#00abf0
+
+}
+.home-content p{
+    font-size:16px;
+}
+
+.home-sci{
+    position: absolute;
+    bottom:40px;
+    width:170px;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+.home-sci a{
+    
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background:transparent;
+    border: 2px solid #00abf0;
+    border-radius: 50%;
+    font-size:20px;
+    color:#00abf0;
+    text-decoration: none;
+    z-index: -1;
+
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    color: white;
+    text-align: center;
+
+}
+#leftbox {
+    float: left;
+    width: 33.3%;
+    text-align: center;
+}
+
+#middlebox {
+    float: left;
+    width: 33.3%;
+    text-align: center;
+}
+
+#rightbox {
+    float: right;
+    width: 33.3%;
+    text-align: center;
+}
+.bor {
+    border: 2px solid black
+}
