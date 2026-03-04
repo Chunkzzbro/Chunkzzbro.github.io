@@ -28,21 +28,19 @@ This file tracks the implementation of logical units. Tasks are crossed off ONLY
 - [x] Implement "Save with Metadata" (Title/Description/Timestamp)
 - [x] Build Version restore logic (switch between saved states)
 - [x] Establish immutable "Factory Default" save
+- [x] Add "Set Default" feature for custom baselines
 
 ## 🛠️ INTERACTIVE EDITOR REFINEMENTS
 - [x] Hover-based link editor for projects/resume
 - [x] Add/Delete buttons for Resume (Edu/Exp)
 - [x] Add/Delete buttons for Skills & Achievements
 - [x] Reset to Defaults safety button
-- [x] Hover-away auto-hide logic for link bar (fix lingering states)
-- [x] Interactive Image URL editing via hover
-- [x] Add/Delete functionality for Project Metrics
-- [x] Add/Delete functionality for Tech Stack Tags
-- [x] Link navigation disabled in Edit Mode
-- [x] Multi-category project support and filtering
-- [x] Dynamic sub-tab management (add/delete tabs)
-- [x] Interactive category selection via checkboxes
-- [x] Experience section duration/role duplication fix
+- [x] Hover-away auto-hide logic for link bar
+- [x] Interactive Image URL editing via hover (Project/Avatar/Focus Icons)
+- [x] Add/Delete functionality for Project Metrics & Tech Tags
+- [x] Multi-category project support and dynamic sub-tab management
+- [x] Global Sidebar Editability (Name, Title, availability, Location, Socials)
+- [x] Dynamic Focus Area management (Add/Delete/Icons)
 
 ## 📄 DOCUMENTATION (MANDATORY)
 - [ ] Populate `PROJECT_OVERVIEW.md`
@@ -55,7 +53,8 @@ This file tracks the implementation of logical units. Tasks are crossed off ONLY
 ---
 
 ## ✅ RECENTLY COMMITTED UNITS
-- (Current): feat: implement sliding version history pane and fix experience duplication
+- (Current): feat: implement global sidebar editability and dynamic focus areas
+- `a1267f0`: feat: implement sliding version history pane and fix experience duplication
 - `6471722`: feat: implement authenticated admin engine and multi-category project management
 - `cac0265`: feat: implement full project data population and tech stack management
 - `821649b`: feat: implement advanced project metrics and interactive image editing

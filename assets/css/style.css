@@ -345,6 +345,21 @@ main {
   border-radius: 20px;
 }
 
+.avatar-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.project-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  transition: var(--transition-1);
+}
+
 .info-content {
   width: 100%;
   min-width: 0;
@@ -702,6 +717,22 @@ body.editing-enabled .history-toggle-btn {
   display: block;
 }
 
+
+.service-icon-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+body.editing-enabled .focus-icon-editable {
+  transition: 0.2s ease;
+}
+
+body.editing-enabled .focus-icon-editable:hover {
+  outline: 2px solid var(--accent-blue);
+  cursor: pointer;
+  transform: scale(1.1);
+}
 
 .info_more-btn {
   position: absolute;

@@ -1,8 +1,8 @@
 'use strict';
 
 /**
- * Content Manager
- * Handles data fetching, persistence, and DOM population
+ * Content Manager - Defensive Version
+ * Handles data fetching and DOM population with fail-safes
  */
 
 const STORAGE_KEY = 'portfolioContent_v1';
@@ -11,13 +11,9 @@ const DATA_PATH = './data/defaultContent.json';
 export const loadContent = async () => {
   try {
     const storedContent = localStorage.getItem(STORAGE_KEY);
-    if (storedContent) {
-      return JSON.parse(storedContent);
-    }
-
+    if (storedContent) return JSON.parse(storedContent);
     const response = await fetch(DATA_PATH);
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
     console.error('Error loading content:', error);
     return null;
@@ -31,53 +27,83 @@ export const saveContent = (content) => {
 export const populateDOM = (data) => {
   if (!data) return;
 
+  // Helper to safely set text and make it editable
+  const setEditableText = (selector, text, key) => {
+    const el = document.querySelector(selector);
+    if (el) {
+        el.innerText = text || "";
+        el.classList.add('editable-section');
+        el.dataset.key = key;
+    }
+  };
+
   try {
     // Hero Section
-    const nameEl = document.querySelector('.name');
-    const titleEl = document.querySelector('.title');
-    const availabilityEl = document.querySelector('.availability');
-    const taglineEl = document.querySelector('.tagline');
+    setEditableText('.name', data.hero?.name, 'hero.name');
+    setEditableText('.title', data.hero?.title, 'hero.title');
+    setEditableText('.availability', data.hero?.availability, 'hero.availability');
+    setEditableText('.tagline', data.hero?.tagline, 'hero.tagline');
     
-    if (nameEl) nameEl.innerText = data.hero.name || "Renjith Anil";
-    if (titleEl) titleEl.innerText = data.hero.title || "";
-    if (availabilityEl) availabilityEl.innerText = data.hero.availability || "";
-    if (taglineEl) taglineEl.innerText = data.hero.tagline || "";
+    const avatarImg = document.querySelector('.avatar-box img');
+    if (avatarImg && data.hero?.avatar) {
+        avatarImg.src = data.hero.avatar;
+        avatarImg.classList.add('sidebar-avatar-editable');
+        avatarImg.dataset.key = 'hero.avatar';
+    }
     
     const resumeLink = document.querySelector('.resume-link');
-    if (resumeLink && data.hero.resumeLink) resumeLink.href = data.hero.resumeLink;
-
-    const contacts = document.querySelectorAll('.contact-link');
-    if (contacts[0] && data.hero.email) {
-      contacts[0].innerText = data.hero.email;
-      contacts[0].href = `mailto:${data.hero.email}`;
+    if (resumeLink && data.hero?.resumeLink) {
+        resumeLink.href = data.hero.resumeLink;
+        resumeLink.dataset.key = 'hero.resumeLink';
     }
 
-    // Sidebar Socials
+    // Contacts
+    const contacts = document.querySelectorAll('.contact-item');
+    if (contacts[0] && data.hero?.email) {
+      const link = contacts[0].querySelector('.contact-link');
+      if (link) {
+          link.innerText = data.hero.email;
+          link.href = `mailto:${data.hero.email}`;
+          link.dataset.key = 'hero.email';
+          link.classList.add('email-link-editable');
+      }
+    }
+    if (contacts[1] && data.hero?.location) {
+        const addr = contacts[1].querySelector('address');
+        if (addr) {
+            addr.innerText = data.hero.location;
+            addr.classList.add('editable-section');
+            addr.dataset.key = 'hero.location';
+        }
+    }
+
     const socialLinks = document.querySelectorAll('.social-link');
-    if (socialLinks.length >= 2 && data.hero.socials) {
+    if (socialLinks.length >= 2 && data.hero?.socials) {
       socialLinks[0].href = data.hero.socials.github || "#";
+      socialLinks[0].dataset.key = 'hero.socials.github';
+      socialLinks[0].classList.add('social-link-editable');
       socialLinks[1].href = data.hero.socials.linkedin || "#";
+      socialLinks[1].dataset.key = 'hero.socials.linkedin';
+      socialLinks[1].classList.add('social-link-editable');
     }
-  } catch (e) { console.error("Error populating hero:", e); }
+  } catch (e) { console.error("Hero population failed:", e); }
 
   try {
-    // About Section
     const aboutText = document.querySelector('.about-text');
-    if (aboutText && data.about.description) {
+    if (aboutText && data.about?.description) {
       aboutText.innerHTML = data.about.description
         .map((p, i) => `<p class="editable-section" data-key="about.description.${i}">${p}</p>`)
         .join('');
     }
-  } catch (e) { console.error("Error populating about:", e); }
+  } catch (e) { console.error("About population failed:", e); }
 
   try {
-    // Focus Areas
     const focusList = document.querySelector('.service-list');
-    if (focusList && data.about.focusAreas) {
+    if (focusList && data.about?.focusAreas) {
       focusList.innerHTML = data.about.focusAreas.map((area, i) => `
-        <li class="service-item">
-          <div class="service-icon-box">
-            <img src="${area.icon}" alt="${area.title}" width="40">
+        <li class="service-item focus-area-item">
+          <div class="service-icon-box focus-icon-editable" data-key="about.focusAreas.${i}.icon">
+            <img src="${area.icon || './assets/images/icon-dev.svg'}" alt="${area.title}" width="40">
           </div>
           <div class="service-content-box">
             <h4 class="h4 service-item-title editable-section" data-key="about.focusAreas.${i}.title">${area.title}</h4>
@@ -86,10 +112,9 @@ export const populateDOM = (data) => {
         </li>
       `).join('');
     }
-  } catch (e) { console.error("Error populating focus areas:", e); }
+  } catch (e) { console.error("Focus areas population failed:", e); }
 
   try {
-    // Resume Section - Education & Experience
     const resumeSections = document.querySelectorAll('.timeline-list');
     if (resumeSections[0] && data.education) {
       resumeSections[0].innerHTML = data.education.map((edu, i) => `
@@ -101,7 +126,6 @@ export const populateDOM = (data) => {
         </li>
       `).join('');
     }
-
     if (resumeSections[1] && data.experience) {
       resumeSections[1].innerHTML = data.experience.map((exp, i) => `
         <li class="timeline-item">
@@ -119,10 +143,9 @@ export const populateDOM = (data) => {
         </li>
       `).join('');
     }
-  } catch (e) { console.error("Error populating resume:", e); }
+  } catch (e) { console.error("Resume population failed:", e); }
 
   try {
-    // Skills Section
     const skillsList = document.querySelector('.skills-list');
     if (skillsList && data.skills) {
       skillsList.innerHTML = data.skills.map((skill, i) => `
@@ -134,12 +157,10 @@ export const populateDOM = (data) => {
         </li>
       `).join('');
     }
-  } catch (e) { console.error("Error populating skills:", e); }
+  } catch (e) { console.error("Skills population failed:", e); }
 
   try {
-    // Project Filtering Tabs (Sub-tabs)
     const filterList = document.querySelector('.filter-list');
-    const selectList = document.querySelector('.select-list');
     if (filterList && data.projectCategories) {
         const cats = ["All", ...data.projectCategories];
         filterList.innerHTML = cats.map((cat, i) => `
@@ -147,17 +168,8 @@ export const populateDOM = (data) => {
                 <button class="${i === 0 ? 'active' : ''} project-filter-tab" data-filter-btn>${cat}</button>
             </li>
         `).join('');
-        
-        if (selectList) {
-            selectList.innerHTML = cats.map(cat => `
-                <li class="select-item">
-                    <button data-select-item>${cat}</button>
-                </li>
-            `).join('');
-        }
     }
 
-    // Projects Section
     const projectList = document.querySelector('.project-list');
     if (projectList && data.projects) {
       projectList.innerHTML = data.projects.map((project, i) => {
@@ -169,9 +181,8 @@ export const populateDOM = (data) => {
               <div class="project-item-icon-box project-image-editable" data-key="projects.${i}.image">
                 <ion-icon name="eye-outline"></ion-icon>
               </div>
-              <img src="${project.image}" alt="${project.title}" loading="lazy">
+              <img src="${project.image || ''}" alt="${project.title}" loading="lazy">
             </figure>
-            
             <div class="project-metrics-list">
               ${project.metrics ? project.metrics.map((m, mi) => `
                 <div class="metric-container" style="display: inline-block; margin-right: 8px;">
@@ -179,39 +190,33 @@ export const populateDOM = (data) => {
                 </div>
               `).join('') : ''}
             </div>
-
-            <a href="${project.url || '#'}" target="_blank" class="project-url-link" style="text-decoration: none;" data-key="projects.${i}.url">
+            <a href="${project.url || '#'}" target="_blank" class="project-url-link" data-key="projects.${i}.url">
               <h3 class="project-title editable-section" data-key="projects.${i}.title" style="color: var(--white-2);">${project.title}</h3>
             </a>
-
             <div class="project-categories-display">
                 <span class="project-category editable-section" data-key="projects.${i}.categories">
-                    ${Array.isArray(project.categories) ? project.categories.join(', ') : (project.category || "")}
+                    ${Array.isArray(project.categories) ? project.categories.join(', ') : ""}
                 </span>
             </div>
-            
             <div class="project-tech-list">
-              ${project.tech ? (Array.isArray(project.tech) ? project.tech : project.tech.split(',')).map((t, ti) => `
+              ${project.tech ? (Array.isArray(project.tech) ? project.tech : []).map((t, ti) => `
                 <div class="tech-tag-container" style="display: inline-block; margin-right: 6px;">
-                  <span class="tech-tag editable-section" data-key="projects.${i}.tech.${ti}">${t.trim()}</span>
+                  <span class="tech-tag editable-section" data-key="projects.${i}.tech.${ti}">${t}</span>
                 </div>
               `).join('') : ''}
             </div>
-
-            <p class="project-text editable-section" data-key="projects.${i}.description" style="font-size: 13px; color: var(--light-gray-70); margin-top: 5px; text-align: left;">${project.description}</p>
-            
+            <p class="project-text editable-section" data-key="projects.${i}.description">${project.description}</p>
             <div class="project-links admin-only-view" style="display: flex; gap: 10px; margin-top: 10px;">
-              ${project.links.github ? `<a href="${project.links.github}" target="_blank" class="admin-btn">GitHub</a>` : ''}
-              ${project.links.demo ? `<a href="${project.links.demo}" target="_blank" class="admin-btn">Demo</a>` : ''}
+              ${project.links?.github ? `<a href="${project.links.github}" target="_blank" class="admin-btn">GitHub</a>` : ''}
+              ${project.links?.demo ? `<a href="${project.links.demo}" target="_blank" class="admin-btn">Demo</a>` : ''}
             </div>
           </div>
         </li>
       `}).join('');
     }
-  } catch (e) { console.error("Error populating projects:", e); }
+  } catch (e) { console.error("Projects population failed:", e); }
 
   try {
-    // Achievements Section
     const achievementList = document.querySelector('.achievements-list');
     if (achievementList && data.achievements) {
       achievementList.innerHTML = data.achievements.map((ach, i) => `
@@ -223,10 +228,6 @@ export const populateDOM = (data) => {
         </li>
       `).join('');
     }
-  } catch (e) { console.error("Error populating achievements:", e); }
-
-  try {
-    // Certifications Section
     const certList = document.querySelector('.certifications-list');
     if (certList && data.certifications) {
       certList.innerHTML = data.certifications.map((cert, i) => `
@@ -238,5 +239,5 @@ export const populateDOM = (data) => {
         </li>
       `).join('');
     }
-  } catch (e) { console.error("Error populating certifications:", e); }
+  } catch (e) { console.error("Achievements population failed:", e); }
 };
