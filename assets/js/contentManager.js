@@ -106,7 +106,11 @@ export const populateDOM = (data) => {
       resumeSections[1].innerHTML = data.experience.map((exp, i) => `
         <li class="timeline-item">
           <h4 class="h4 timeline-item-title editable-section" data-key="experience.${i}.company">${exp.company}</h4>
-          <span class="editable-section" data-key="experience.${i}.duration">${exp.duration} — ${exp.role}</span>
+          <span>
+            <span class="editable-section" data-key="experience.${i}.duration" style="display: inline;">${exp.duration}</span> 
+            — 
+            <span class="editable-section" data-key="experience.${i}.role" style="display: inline;">${exp.role}</span>
+          </span>
           <ul class="experience-bullets" style="margin-top: 10px; list-style: disc; padding-left: 20px;">
             ${exp.bullets ? exp.bullets.map((b, bi) => `
               <li class="timeline-text editable-section" data-key="experience.${i}.bullets.${bi}">${b}</li>

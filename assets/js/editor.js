@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Advanced Editor Engine with Authentication, Multi-Category, and Hard-Reset Fail-safes
+ * Advanced Editor Engine with Authentication, Multi-Category, and Version Control
  */
 
 import { saveContent, populateDOM } from './contentManager.js';
@@ -12,6 +12,7 @@ let isAuthenticated = false;
 let currentData = null;
 let activeLinkElement = null;
 let isHoveringBar = false;
+const HISTORY_KEY = 'portfolioHistory_v1';
 
 // Expose category updater to global scope
 window.updateProjectCategories = (pIdx, checkbox) => {
@@ -28,57 +29,42 @@ window.updateProjectCategories = (pIdx, checkbox) => {
 export const initEditor = (data) => {
   currentData = data;
   
-  // Ensure critical data structures exist (fallback for old localStorage)
   if (!currentData.projectCategories) currentData.projectCategories = ["ML Systems", "Computer Vision", "Full Stack"];
   currentData.projects.forEach(p => { if (!p.categories) p.categories = []; });
 
-  // 1. HARD RESET SHORTCUT (Ctrl + Alt + R)
-  // Works even if not logged in - Use this if the site breaks!
+  // Initialize History if empty
+  initHistoryBaseline(data);
+
+  // Keyboard Shortcuts
   window.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.altKey && e.key === 'r') {
-      if (confirm('HARD RESET: Clear all browser edits and reload default site?')) {
+      if (confirm('HARD RESET: Clear all browser edits?')) {
         localStorage.removeItem('portfolioContent_v1');
+        localStorage.removeItem(HISTORY_KEY);
         window.location.reload();
       }
     }
-  });
-
-  // 2. Button Trigger
-  const trigger = document.getElementById('edit-mode-trigger');
-  const handleAuthOrToggle = () => {
-    if (!isAuthenticated) {
-        showLoginModal();
-    } else {
-        toggleEditMode();
-    }
-  };
-
-  if (trigger) {
-    trigger.addEventListener('click', handleAuthOrToggle);
-  }
-
-  // 3. Edit Shortcut (Ctrl + Shift + E)
-  window.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.shiftKey && e.key === 'E') {
       e.preventDefault();
       handleAuthOrToggle();
     }
   });
 
-  // 4. Initialization
-  try {
-    createFloatingLinkBar();
-    createAuthModal();
-  } catch (err) {
-    console.error("Editor subsystem init failed:", err);
-  }
+  const trigger = document.getElementById('edit-mode-trigger');
+  if (trigger) trigger.addEventListener('click', handleAuthOrToggle);
 
-  // Global click interceptor
   document.addEventListener('click', (e) => {
-    if (isEditMode && e.target.closest('.project-url-link, .resume-link')) {
-        e.preventDefault();
-    }
+    if (isEditMode && e.target.closest('.project-url-link, .resume-link')) e.preventDefault();
   }, true);
+
+  createFloatingLinkBar();
+  createAuthModal();
+  createHistoryPane();
+};
+
+const handleAuthOrToggle = () => {
+    if (!isAuthenticated) showLoginModal();
+    else toggleEditMode();
 };
 
 const toggleEditMode = () => {
@@ -100,13 +86,18 @@ const toggleEditMode = () => {
     injectListControls();
     initLinkHoverListeners();
     convertCategoriesToDropdowns();
+    document.querySelector('.history-toggle-btn').style.display = 'block';
   } else {
     hideSaveButton();
     removeListControls();
     hideFloatingLinkBar();
+    document.querySelector('.history-toggle-btn').style.display = 'none';
+    document.querySelector('.history-pane').classList.remove('active');
     refreshUI(); 
   }
 };
+
+/* --- Authentication --- */
 
 const createAuthModal = () => {
   if (document.querySelector('.auth-overlay')) return;
@@ -124,28 +115,134 @@ const createAuthModal = () => {
   `;
   document.body.appendChild(overlay);
   document.getElementById('auth-login-btn').addEventListener('click', handleLogin);
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) overlay.classList.remove('active');
-  });
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); });
 };
 
-const showLoginModal = () => {
-  const overlay = document.querySelector('.auth-overlay');
-  if (overlay) overlay.classList.add('active');
-};
+const showLoginModal = () => { document.querySelector('.auth-overlay').classList.add('active'); };
 
 const handleLogin = () => {
   const user = document.getElementById('auth-user').value;
   const pass = document.getElementById('auth-pass').value;
-  const error = document.getElementById('auth-error-msg');
   if (user === 'admin' && pass === 'admin') {
     isAuthenticated = true;
     document.querySelector('.auth-overlay').classList.remove('active');
     toggleEditMode();
   } else {
-    error.style.display = 'block';
+    document.getElementById('auth-error-msg').style.display = 'block';
   }
 };
+
+/* --- Version Control System --- */
+
+const initHistoryBaseline = (defaultData) => {
+    const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+    if (history.length === 0) {
+        history.push({
+            id: 'default',
+            timestamp: new Date().toLocaleString(),
+            title: 'Factory Default',
+            description: 'Original baseline configuration.',
+            data: defaultData,
+            isDefault: true
+        });
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+    }
+};
+
+const createHistoryPane = () => {
+    const pane = document.createElement('div');
+    pane.className = 'history-pane';
+    pane.innerHTML = `
+        <div class="history-header">
+            <h3 class="h3">Edit History</h3>
+            <button class="admin-btn" onclick="document.querySelector('.history-pane').classList.remove('active')">Close</button>
+        </div>
+        <div class="history-list"></div>
+    `;
+    document.body.appendChild(pane);
+
+    const toggle = document.createElement('button');
+    toggle.className = 'history-toggle-btn';
+    toggle.innerText = 'History';
+    toggle.onclick = () => {
+        renderHistoryList();
+        pane.classList.toggle('active');
+    };
+    document.body.appendChild(toggle);
+};
+
+const renderHistoryList = () => {
+    const list = document.querySelector('.history-list');
+    const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+    
+    list.innerHTML = history.reverse().map(version => `
+        <div class="history-item ${version.isDefault ? 'default' : ''}">
+            <div class="history-item-meta">
+                <span>${version.timestamp}</span>
+                ${version.isDefault ? '<span>IMMUTABLE</span>' : ''}
+            </div>
+            <div class="history-item-title">${version.title}</div>
+            <div class="history-item-desc">${version.description}</div>
+            <div class="history-item-actions">
+                <button class="admin-btn" onclick="window.restoreVersion('${version.id}')">Restore</button>
+                ${!version.isDefault ? `<button class="admin-btn delete" onclick="window.deleteVersion('${version.id}')">Delete</button>` : ''}
+            </div>
+        </div>
+    `).join('');
+};
+
+window.restoreVersion = (id) => {
+    const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+    const version = history.find(v => v.id === id);
+    if (version && confirm(`Restore to "${version.title}"? Current unsaved changes will be lost.`)) {
+        currentData = JSON.parse(JSON.stringify(version.data)); // Deep clone
+        saveContent(currentData);
+        window.location.reload();
+    }
+};
+
+window.deleteVersion = (id) => {
+    let history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+    if (confirm('Delete this version permanently?')) {
+        history = history.filter(v => v.id !== id);
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+        renderHistoryList();
+    }
+};
+
+const performSave = () => {
+    const title = prompt("Enter a title for this version:", `Update ${new Date().toLocaleDateString()}`);
+    if (!title) return;
+    const desc = prompt("Enter a short description of changes:");
+    
+    const editables = document.querySelectorAll('.editable-section');
+    editables.forEach(el => {
+        const key = el.dataset.key;
+        if (key && !key.includes('.categories.')) {
+            const keys = key.split('.');
+            let target = currentData;
+            for (let i = 0; i < keys.length - 1; i++) target = target[keys[i]];
+            target[keys[keys.length - 1]] = el.innerText.trim();
+        }
+    });
+
+    // Save current state to history
+    const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+    history.push({
+        id: 'ver_' + Date.now(),
+        timestamp: new Date().toLocaleString(),
+        title: title,
+        description: desc || 'No description provided.',
+        data: currentData
+    });
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+
+    saveContent(currentData);
+    alert('Portfolio saved and versioned successfully!');
+    toggleEditMode();
+};
+
+/* --- List & Sub-item Management --- */
 
 const injectListControls = () => {
   const containers = [
@@ -344,22 +441,7 @@ const refreshUI = () => {
   }
 };
 
-const performSave = () => {
-  const editables = document.querySelectorAll('.editable-section');
-  editables.forEach(el => {
-    const key = el.dataset.key;
-    if (key) {
-        if (key.includes('.categories.')) return;
-        const keys = key.split('.');
-        let target = currentData;
-        for (let i = 0; i < keys.length - 1; i++) target = target[keys[i]];
-        target[keys[keys.length - 1]] = el.innerText.trim();
-    }
-  });
-  saveContent(currentData);
-  alert('Portfolio updated successfully!');
-  toggleEditMode();
-};
+/* --- Link/Image Editor --- */
 
 const createFloatingLinkBar = () => {
   const bar = document.createElement('div');
@@ -430,6 +512,8 @@ const saveLinkUrl = () => {
   hideFloatingLinkBar();
 };
 
+/* --- Global Admin UI --- */
+
 const showSaveButton = () => {
   let container = document.getElementById('admin-save-container');
   if (!container) {
@@ -445,7 +529,7 @@ const showSaveButton = () => {
     resetBtn.innerText = 'Reset to Defaults';
     resetBtn.className = 'admin-btn';
     resetBtn.style.cssText = `background: hsla(0, 100%, 50%, 0.1); color: #ff4b4b; border: 1px solid #ff4b4b; padding: 12px 20px; font-size: 13px; font-weight: 600;`;
-    resetBtn.onclick = () => { if (confirm('Permanently delete all browser edits?')) { localStorage.removeItem('portfolioContent_v1'); window.location.reload(); } };
+    resetBtn.onclick = () => { if (confirm('Permanently delete all browser edits?')) { localStorage.removeItem('portfolioContent_v1'); localStorage.removeItem(HISTORY_KEY); window.location.reload(); } };
     container.appendChild(resetBtn);
     container.appendChild(saveBtn);
     document.body.appendChild(container);

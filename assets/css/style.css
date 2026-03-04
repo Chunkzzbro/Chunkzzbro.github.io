@@ -596,6 +596,112 @@ body.editing-enabled .metric-delete-btn {
   display: none;
 }
 
+/* Version History Pane */
+.history-pane {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 320px;
+  height: 100%;
+  background: var(--eerie-black-2);
+  border-left: 1px solid var(--jet);
+  z-index: 4500;
+  transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+}
+
+.history-pane.active {
+  right: 0;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  border-bottom: 1px solid var(--onyx);
+  padding-bottom: 15px;
+}
+
+.history-list {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.history-item {
+  background: var(--onyx);
+  border: 1px solid var(--jet);
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.history-item:hover {
+  border-color: var(--accent-blue);
+}
+
+.history-item.default {
+  border-left: 4px solid var(--accent-blue);
+}
+
+.history-item-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--light-gray-70);
+  margin-bottom: 5px;
+}
+
+.history-item-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white-1);
+  margin-bottom: 4px;
+}
+
+.history-item-desc {
+  font-size: 11px;
+  color: var(--light-gray-70);
+  line-height: 1.4;
+}
+
+.history-item-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.history-toggle-btn {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--onyx);
+  color: var(--white-1);
+  border: 1px solid var(--jet);
+  padding: 15px 5px;
+  border-radius: 8px 0 0 8px;
+  cursor: pointer;
+  z-index: 4400;
+  display: none;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+body.editing-enabled .history-toggle-btn {
+  display: block;
+}
+
 
 .info_more-btn {
   position: absolute;
