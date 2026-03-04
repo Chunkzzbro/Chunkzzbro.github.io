@@ -18,10 +18,10 @@ This file tracks the implementation of logical units. Tasks are crossed off ONLY
 - [x] Populate full 7-project list with technical metrics and tech stacks
 
 ## 🔐 ADMIN ENGINE (AUTHENTICATION)
-- [ ] Add "Edit Mode" button to sidebar
-- [ ] Create Login Modal UI (Glassmorphism overlay)
-- [ ] Implement `admin/admin` credential verification
-- [ ] Replace `Ctrl+Shift+E` trigger with authenticated session
+- [x] Add "Edit Mode" button to sidebar
+- [x] Create Login Modal UI (Glassmorphism overlay)
+- [x] Implement `admin/admin` credential verification
+- [x] Replace `Ctrl+Shift+E` trigger with authenticated session
 
 ## 📜 VERSIONING SYSTEM (EDIT HISTORY)
 - [ ] Create sliding right-side Version Pane UI
@@ -39,6 +39,9 @@ This file tracks the implementation of logical units. Tasks are crossed off ONLY
 - [x] Add/Delete functionality for Project Metrics
 - [x] Add/Delete functionality for Tech Stack Tags
 - [x] Link navigation disabled in Edit Mode
+- [x] Multi-category project support and filtering
+- [x] Dynamic sub-tab management (add/delete tabs)
+- [x] Interactive category selection via checkboxes
 
 ## 📄 DOCUMENTATION (MANDATORY)
 - [ ] Populate `PROJECT_OVERVIEW.md`
@@ -51,7 +54,8 @@ This file tracks the implementation of logical units. Tasks are crossed off ONLY
 ---
 
 ## ✅ RECENTLY COMMITTED UNITS
-- (Current): feat: implement full project data population and tech stack management
+- (Current): feat: implement authenticated admin engine and multi-category project management
+- `cac0265`: feat: implement full project data population and tech stack management
 - `821649b`: feat: implement advanced project metrics and interactive image editing
 - `50a7eda`: feat: complete transformation into interactive ML Systems portfolio platform
 

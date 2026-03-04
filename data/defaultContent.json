@@ -92,6 +92,7 @@
       "tech": "Python, Keras, scikit-learn, NumPy, Pandas, Prometheus, Docker"
     }
   ],
+  "projectCategories": ["ML Systems", "Computer Vision", "Full Stack", "Game Dev"],
   "projects": [
     {
       "title": "Parallelized Leukemia Detection",
@@ -99,7 +100,7 @@
       "description": "Distributed CNN-based leukemia classification system using OpenMPI. Published in Springer ICAC 2024.",
       "metrics": ["40% Faster Training", "92% Accuracy", "OpenMPI Implementation"],
       "tech": ["Python", "Keras", "OpenMPI", "MPI4Py"],
-      "category": "ML Systems",
+      "categories": ["ML Systems"],
       "image": "./assets/images/project-1.jpg",
       "links": {
         "github": "https://github.com/Chunkzzbro",
@@ -112,7 +113,7 @@
       "description": "Real-time face detection, embedding, and similarity ranking pipeline using RetinaFace and ArcFace.",
       "metrics": ["92% Accuracy", "Real-time Ranking"],
       "tech": ["Python", "OpenCV", "RetinaFace", "ArcFace", "Streamlit"],
-      "category": "Computer Vision",
+      "categories": ["Computer Vision", "ML Systems"],
       "image": "./assets/images/project-2.png",
       "links": {
         "github": "https://github.com/Chunkzzbro",
@@ -125,7 +126,7 @@
       "description": "Vision-based fatigue monitoring system using EAR scoring and integrated audio alerts.",
       "metrics": ["85% Accuracy", "~30 FPS Inference"],
       "tech": ["Python", "OpenCV", "MediaPipe", "scikit-learn"],
-      "category": "Computer Vision",
+      "categories": ["Computer Vision"],
       "image": "./assets/images/project-3.jpg",
       "links": {
         "github": "https://github.com/Chunkzzbro",
@@ -138,7 +139,7 @@
       "description": "ML pipeline for risk prediction with AWS SageMaker deployment and Streamlit dashboard.",
       "metrics": ["87% Accuracy", "SageMaker Deployed"],
       "tech": ["Python", "scikit-learn", "AWS SageMaker", "Streamlit"],
-      "category": "ML Systems",
+      "categories": ["ML Systems"],
       "image": "./assets/images/project-4.png",
       "links": {
         "github": "https://github.com/Chunkzzbro",
@@ -151,7 +152,7 @@
       "description": "CV-based posture monitoring using MediaPipe landmarks and SVM classification on 4,700 images.",
       "metrics": ["76% Accuracy", "~30 FPS Inference"],
       "tech": ["Python", "MediaPipe", "OpenCV", "scikit-learn"],
-      "category": "Computer Vision",
+      "categories": ["Computer Vision"],
       "image": "./assets/images/project-5.png",
       "links": {
         "github": "https://github.com/Chunkzzbro",
@@ -164,7 +165,7 @@
       "description": "Full-stack platform with dynamic seat locking, JWT authentication, and responsive design.",
       "metrics": ["Dynamic Seat Locking", "Secure Auth"],
       "tech": ["React", "Node.js", "Express", "MongoDB", "JWT"],
-      "category": "Full Stack",
+      "categories": ["Full Stack"],
       "image": "./assets/images/project-6.png",
       "links": {
         "github": "https://github.com/Chunkzzbro",
@@ -177,7 +178,7 @@
       "description": "2D adventure puzzle platformer with AI pathfinding and modular tilemap-based level design.",
       "metrics": ["AI Pathfinding", "Physics Mechanics"],
       "tech": ["Unity", "C#", "Tilemaps"],
-      "category": "Game Dev",
+      "categories": ["Game Dev"],
       "image": "./assets/images/project-7.png",
       "links": {
         "github": "https://github.com/Chunkzzbro",

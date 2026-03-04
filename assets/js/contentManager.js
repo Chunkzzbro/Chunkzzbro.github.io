@@ -133,11 +133,33 @@ export const populateDOM = (data) => {
   } catch (e) { console.error("Error populating skills:", e); }
 
   try {
+    // Project Filtering Tabs (Sub-tabs)
+    const filterList = document.querySelector('.filter-list');
+    const selectList = document.querySelector('.select-list');
+    if (filterList && data.projectCategories) {
+        const cats = ["All", ...data.projectCategories];
+        filterList.innerHTML = cats.map((cat, i) => `
+            <li class="filter-item">
+                <button class="${i === 0 ? 'active' : ''} project-filter-tab" data-filter-btn>${cat}</button>
+            </li>
+        `).join('');
+        
+        if (selectList) {
+            selectList.innerHTML = cats.map(cat => `
+                <li class="select-item">
+                    <button data-select-item>${cat}</button>
+                </li>
+            `).join('');
+        }
+    }
+
     // Projects Section
     const projectList = document.querySelector('.project-list');
     if (projectList && data.projects) {
-      projectList.innerHTML = data.projects.map((project, i) => `
-        <li class="project-item active" data-filter-item data-category="${project.category.toLowerCase()}">
+      projectList.innerHTML = data.projects.map((project, i) => {
+        const categoryString = Array.isArray(project.categories) ? project.categories.join('|') : (project.category || "");
+        return `
+        <li class="project-item active" data-filter-item data-category="${categoryString.toLowerCase()}">
           <div class="project-card">
             <figure class="project-img">
               <div class="project-item-icon-box project-image-editable" data-key="projects.${i}.image">
@@ -158,7 +180,11 @@ export const populateDOM = (data) => {
               <h3 class="project-title editable-section" data-key="projects.${i}.title" style="color: var(--white-2);">${project.title}</h3>
             </a>
 
-            <p class="project-category editable-section" data-key="projects.${i}.category">${project.category}</p>
+            <div class="project-categories-display">
+                <span class="project-category editable-section" data-key="projects.${i}.categories">
+                    ${Array.isArray(project.categories) ? project.categories.join(', ') : (project.category || "")}
+                </span>
+            </div>
             
             <div class="project-tech-list">
               ${project.tech ? (Array.isArray(project.tech) ? project.tech : project.tech.split(',')).map((t, ti) => `
@@ -176,7 +202,7 @@ export const populateDOM = (data) => {
             </div>
           </div>
         </li>
-      `).join('');
+      `}).join('');
     }
   } catch (e) { console.error("Error populating projects:", e); }
 
