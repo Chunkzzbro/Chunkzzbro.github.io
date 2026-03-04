@@ -97,11 +97,7 @@
       "title": "Parallelized Leukemia Detection",
       "url": "https://github.com/Chunkzzbro",
       "description": "Distributed CNN-based leukemia classification system using OpenMPI.",
-      "impact": [
-        "40% faster distributed CNN training",
-        "92% validation accuracy",
-        "Springer ICAC 2024 published"
-      ],
+      "metrics": ["92% Accuracy", "40% Faster Training"],
       "tech": "Python, Keras, OpenMPI, MPI4Py",
       "category": "ML Systems",
       "image": "./assets/images/project-1.jpg",
@@ -114,11 +110,7 @@
       "title": "FaceMatch AI",
       "url": "https://github.com/Chunkzzbro",
       "description": "Real-time face detection, embedding, and similarity ranking pipeline.",
-      "impact": [
-        "92% recognition accuracy",
-        "RetinaFace + ArcFace integration",
-        "Real-time similarity ranking engine"
-      ],
+      "metrics": ["92% Accuracy", "Real-time Inference"],
       "tech": "Python, OpenCV, ArcFace, Streamlit",
       "category": "Computer Vision",
       "image": "./assets/images/project-2.png",

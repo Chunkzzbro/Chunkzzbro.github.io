@@ -376,8 +376,38 @@ main {
   margin: 0 auto;
 }
 
+.info-content .availability {
+  font-size: 11px;
+  color: var(--accent-blue);
+  background: hsla(221, 83%, 53%, 0.1);
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-top: 5px;
+  font-weight: 500;
+  border: 1px solid hsla(221, 83%, 53%, 0.3);
+}
+
+.project-metrics {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.metric-badge {
+  background: hsla(221, 83%, 53%, 0.15);
+  color: var(--accent-blue-light);
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  border: 1px solid hsla(221, 83%, 53%, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 .info-content .tagline {
-  color: var(--light-gray-70);
+  color: var(--white-2);
   font-size: var(--fs-7);
   font-weight: var(--fw-300);
   margin-top: 12px;
@@ -386,13 +416,42 @@ main {
   padding-left: 12px;
   text-align: left;
   word-wrap: break-word;
+  opacity: 0.9;
 }
 
-/* Admin UI Styles */
-.admin-controls {
+.admin-only-view {
+  display: none !important;
+}
+
+body.editing-enabled .admin-only-view {
+  display: flex !important;
+}
+
+.metric-container {
+  position: relative;
+  display: inline-block;
+}
+
+.metric-delete-btn {
+  position: absolute;
+  top: -10px;
+  right: -5px;
+  background: #ff4b4b;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  font-size: 8px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+body.editing-enabled .metric-delete-btn {
   display: flex;
-  gap: 8px;
-  margin-top: 10px;
 }
 
 .admin-btn {

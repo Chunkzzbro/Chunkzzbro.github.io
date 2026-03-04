@@ -35,10 +35,12 @@ export const populateDOM = (data) => {
     // Hero Section
     const nameEl = document.querySelector('.name');
     const titleEl = document.querySelector('.title');
+    const availabilityEl = document.querySelector('.availability');
     const taglineEl = document.querySelector('.tagline');
     
     if (nameEl) nameEl.innerText = data.hero.name || "Renjith Anil";
     if (titleEl) titleEl.innerText = data.hero.title || "";
+    if (availabilityEl) availabilityEl.innerText = data.hero.availability || "";
     if (taglineEl) taglineEl.innerText = data.hero.tagline || "";
     
     const resumeLink = document.querySelector('.resume-link');
@@ -138,19 +140,28 @@ export const populateDOM = (data) => {
         <li class="project-item active" data-filter-item data-category="${project.category.toLowerCase()}">
           <div class="project-card">
             <figure class="project-img">
-              <div class="project-item-icon-box">
+              <div class="project-item-icon-box project-image-editable" data-key="projects.${i}.image">
                 <ion-icon name="eye-outline"></ion-icon>
               </div>
               <img src="${project.image}" alt="${project.title}" loading="lazy">
-              </figure>
-              <a href="${project.url || '#'}" target="_blank" class="project-url-link" style="text-decoration: none;" data-key="projects.${i}.url">
+            </figure>
+            
+            <div class="project-metrics-list">
+              ${project.metrics ? project.metrics.map((m, mi) => `
+                <div class="metric-container" style="display: inline-block; margin-right: 8px;">
+                  <span class="metric-badge editable-section" data-key="projects.${i}.metrics.${mi}">${m}</span>
+                </div>
+              `).join('') : ''}
+            </div>
+
+            <a href="${project.url || '#'}" target="_blank" class="project-url-link" style="text-decoration: none;" data-key="projects.${i}.url">
               <h3 class="project-title editable-section" data-key="projects.${i}.title" style="color: var(--white-2);">${project.title}</h3>
-              </a>
+            </a>
 
             <p class="project-category editable-section" data-key="projects.${i}.category">${project.category}</p>
             <p class="project-text editable-section" data-key="projects.${i}.description" style="font-size: 13px; color: var(--light-gray-70); margin-top: 5px; text-align: left;">${project.description}</p>
             
-            <div class="project-links" style="display: flex; gap: 10px; margin-top: 10px;">
+            <div class="project-links admin-only-view" style="display: flex; gap: 10px; margin-top: 10px;">
               ${project.links.github ? `<a href="${project.links.github}" target="_blank" class="admin-btn">GitHub</a>` : ''}
               ${project.links.demo ? `<a href="${project.links.demo}" target="_blank" class="admin-btn">Demo</a>` : ''}
             </div>

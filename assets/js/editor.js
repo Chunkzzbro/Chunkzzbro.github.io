@@ -2,7 +2,7 @@
 
 /**
  * Advanced Editor Engine
- * Handles in-browser content editing, adding/deleting items, and floating link editing
+ * Handles in-browser content editing, adding/deleting items, and floating link/image editing
  */
 
 import { saveContent, populateDOM } from './contentManager.js';
@@ -21,6 +21,14 @@ export const initEditor = (data) => {
       toggleEditMode();
     }
   });
+
+  // Global click interceptor for links in edit mode
+  document.addEventListener('click', (e) => {
+    if (isEditMode && e.target.closest('.project-url-link, .resume-link')) {
+        e.preventDefault();
+        console.log('Link navigation prevented in Edit Mode');
+    }
+  }, true);
 
   // Create floating link bar
   createFloatingLinkBar();
@@ -54,14 +62,14 @@ const createFloatingLinkBar = () => {
     border: 1px solid var(--accent-blue);
     padding: 5px;
     border-radius: 4px;
-    z-index: 2000;
+    z-index: 4000;
     gap: 5px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   `;
   
   const input = document.createElement('input');
   input.type = 'text';
-  input.placeholder = 'Enter URL...';
+  input.placeholder = 'Enter URL or Image Link...';
   input.style.cssText = `
     background: var(--smoky-black);
     color: white;
@@ -69,7 +77,7 @@ const createFloatingLinkBar = () => {
     padding: 4px 8px;
     font-size: 11px;
     border-radius: 2px;
-    width: 180px;
+    width: 220px;
   `;
   
   const saveBtn = document.createElement('button');
@@ -90,16 +98,15 @@ const createFloatingLinkBar = () => {
 };
 
 const initLinkHoverListeners = () => {
-  // Listen for hover on project titles and resume link
-  const linkTargets = document.querySelectorAll('.project-url-link, .resume-link');
+  // Listen for hover on project titles, image overlay boxes, and resume link
+  const linkTargets = document.querySelectorAll('.project-url-link, .resume-link, .project-image-editable');
   
   linkTargets.forEach(target => {
     target.addEventListener('mouseenter', showLinkBar);
     target.addEventListener('mouseleave', () => {
-        // Small delay to allow moving mouse to the bar
         setTimeout(() => {
             if (!isHoveringBar) hideFloatingLinkBar();
-        }, 100);
+        }, 200);
     });
   });
 };
@@ -118,7 +125,6 @@ const showLinkBar = (e) => {
   bar.style.left = `${window.scrollX + rect.left}px`;
   bar.style.display = 'flex';
   
-  // Get current value from data model
   const key = target.dataset.key;
   input.value = getValueFromKey(key) || '';
 };
@@ -147,7 +153,14 @@ const saveLinkUrl = () => {
   if (activeLinkElement) {
     const key = activeLinkElement.dataset.key;
     updateDataModel(key, url);
-    activeLinkElement.href = url;
+    
+    // Update visual element
+    if (activeLinkElement.classList.contains('project-image-editable')) {
+        const img = activeLinkElement.nextElementSibling;
+        if (img && img.tagName === 'IMG') img.src = url;
+    } else {
+        activeLinkElement.href = url;
+    }
   }
   isHoveringBar = false;
   hideFloatingLinkBar();
@@ -181,7 +194,7 @@ const showSaveButton = () => {
     saveBtn.id = 'save-changes-btn';
     saveBtn.innerText = 'Save All Changes';
     saveBtn.className = 'form-btn';
-    saveBtn.style.cssText = `padding: 12px 25px; margin: 0;`;
+    saveBtn.style.padding = '12px 25px';
     saveBtn.onclick = performSave;
 
     const resetBtn = document.createElement('button');
@@ -196,7 +209,7 @@ const showSaveButton = () => {
       font-weight: 600;
     `;
     resetBtn.onclick = () => {
-      if (confirm('CRITICAL: This will permanently delete all your browser-based edits and revert the site to its original code state. Proceed?')) {
+      if (confirm('CRITICAL: This will permanently delete all your browser-based edits. Proceed?')) {
         localStorage.removeItem('portfolioContent_v1');
         window.location.reload();
       }
@@ -237,7 +250,21 @@ const injectListControls = () => {
     }
   });
 
-  // Inject Delete buttons
+  // Project Metrics Add Button
+  document.querySelectorAll('.project-item').forEach((item, index) => {
+    const metricsList = item.querySelector('.project-metrics-list');
+    if (metricsList && !metricsList.querySelector('.add-metric-btn')) {
+        const btn = document.createElement('button');
+        btn.className = 'admin-btn add-metric-btn';
+        btn.innerText = '+ Add Metric';
+        btn.style.fontSize = '9px';
+        btn.style.padding = '2px 6px';
+        btn.onclick = () => addMetric(index);
+        metricsList.appendChild(btn);
+    }
+  });
+
+  // Inject Delete buttons for main items
   const itemMappings = [
     { selector: '.project-item', key: 'projects' },
     { selector: 'section.timeline:nth-of-type(1) .timeline-item', key: 'education' },
@@ -259,10 +286,39 @@ const injectListControls = () => {
       }
     });
   });
+
+  // Metric Delete Buttons
+  document.querySelectorAll('.metric-container').forEach((cont) => {
+    if (!cont.querySelector('.metric-delete-btn')) {
+        const delBtn = document.createElement('button');
+        delBtn.className = 'metric-delete-btn';
+        delBtn.innerText = '×';
+        const metricEl = cont.querySelector('.metric-badge');
+        const key = metricEl.dataset.key;
+        delBtn.onclick = () => deleteMetric(key);
+        cont.appendChild(delBtn);
+    }
+  });
+};
+
+const addMetric = (projectIndex) => {
+    if (!currentData.projects[projectIndex].metrics) {
+        currentData.projects[projectIndex].metrics = [];
+    }
+    currentData.projects[projectIndex].metrics.push("New Metric: 0%");
+    refreshUI();
+};
+
+const deleteMetric = (key) => {
+    const keys = key.split('.'); // projects.0.metrics.1
+    const pIdx = keys[1];
+    const mIdx = keys[3];
+    currentData.projects[pIdx].metrics.splice(mIdx, 1);
+    refreshUI();
 };
 
 const removeListControls = () => {
-  document.querySelectorAll('.admin-btn').forEach(btn => btn.remove());
+  document.querySelectorAll('.admin-btn, .metric-delete-btn').forEach(btn => btn.remove());
 };
 
 const addItem = (key) => {
@@ -274,32 +330,14 @@ const addItem = (key) => {
       description: "Short description here", 
       tech: "Tech used", 
       image: "./assets/images/project-1.jpg",
+      metrics: [],
       links: { github: "#", demo: "#" }
     },
-    experience: { 
-      company: "New Company", 
-      role: "Role", 
-      duration: "2024", 
-      bullets: ["New achievement bullet point"] 
-    },
-    education: {
-      university: "University Name",
-      degree: "Degree Name",
-      duration: "Years",
-      impact: "Grade/Honors"
-    },
-    skills: {
-      category: "New Category",
-      items: "Skill 1, Skill 2, Skill 3"
-    },
-    achievements: {
-      title: "New Achievement",
-      description: "Description of the achievement."
-    },
-    certifications: {
-      title: "New Certification",
-      description: "Description of the certification."
-    }
+    experience: { company: "New Company", role: "Role", duration: "2024", bullets: ["Task 1"] },
+    education: { university: "University Name", degree: "Degree Name", duration: "Years", impact: "Grade" },
+    skills: { category: "New Category", items: "Skill 1, Skill 2" },
+    achievements: { title: "New Achievement", description: "Desc" },
+    certifications: { title: "New Certification", description: "Desc" }
   };
 
   currentData[key].unshift(templates[key]);
@@ -307,7 +345,7 @@ const addItem = (key) => {
 };
 
 const deleteItem = (key, index) => {
-  if (confirm(`Are you sure you want to delete this ${key} item?`)) {
+  if (confirm(`Delete this ${key} item?`)) {
     currentData[key].splice(index, 1);
     refreshUI();
   }
@@ -326,15 +364,10 @@ const refreshUI = () => {
 
 const performSave = () => {
   const editables = document.querySelectorAll('.editable-section');
-  
   editables.forEach(el => {
     const key = el.dataset.key;
-    if (!key) return;
-    
-    const value = el.innerText.trim();
-    updateDataModel(key, value);
+    if (key) updateDataModel(key, el.innerText.trim());
   });
-
   saveContent(currentData);
   alert('Portfolio updated successfully!');
   toggleEditMode();
