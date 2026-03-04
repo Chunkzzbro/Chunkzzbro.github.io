@@ -96,9 +96,9 @@
     {
       "title": "Parallelized Leukemia Detection",
       "url": "https://github.com/Chunkzzbro",
-      "description": "Distributed CNN-based leukemia classification system using OpenMPI.",
-      "metrics": ["92% Accuracy", "40% Faster Training"],
-      "tech": "Python, Keras, OpenMPI, MPI4Py",
+      "description": "Distributed CNN-based leukemia classification system using OpenMPI. Published in Springer ICAC 2024.",
+      "metrics": ["40% Faster Training", "92% Accuracy", "OpenMPI Implementation"],
+      "tech": ["Python", "Keras", "OpenMPI", "MPI4Py"],
       "category": "ML Systems",
       "image": "./assets/images/project-1.jpg",
       "links": {
@@ -109,11 +109,76 @@
     {
       "title": "FaceMatch AI",
       "url": "https://github.com/Chunkzzbro",
-      "description": "Real-time face detection, embedding, and similarity ranking pipeline.",
-      "metrics": ["92% Accuracy", "Real-time Inference"],
-      "tech": "Python, OpenCV, ArcFace, Streamlit",
+      "description": "Real-time face detection, embedding, and similarity ranking pipeline using RetinaFace and ArcFace.",
+      "metrics": ["92% Accuracy", "Real-time Ranking"],
+      "tech": ["Python", "OpenCV", "RetinaFace", "ArcFace", "Streamlit"],
       "category": "Computer Vision",
       "image": "./assets/images/project-2.png",
+      "links": {
+        "github": "https://github.com/Chunkzzbro",
+        "demo": "#"
+      }
+    },
+    {
+      "title": "Real-Time Drowsiness Detection",
+      "url": "https://github.com/Chunkzzbro",
+      "description": "Vision-based fatigue monitoring system using EAR scoring and integrated audio alerts.",
+      "metrics": ["85% Accuracy", "~30 FPS Inference"],
+      "tech": ["Python", "OpenCV", "MediaPipe", "scikit-learn"],
+      "category": "Computer Vision",
+      "image": "./assets/images/project-3.jpg",
+      "links": {
+        "github": "https://github.com/Chunkzzbro",
+        "demo": "#"
+      }
+    },
+    {
+      "title": "Real-Time Diabetes Prediction",
+      "url": "https://github.com/Chunkzzbro",
+      "description": "ML pipeline for risk prediction with AWS SageMaker deployment and Streamlit dashboard.",
+      "metrics": ["87% Accuracy", "SageMaker Deployed"],
+      "tech": ["Python", "scikit-learn", "AWS SageMaker", "Streamlit"],
+      "category": "ML Systems",
+      "image": "./assets/images/project-4.png",
+      "links": {
+        "github": "https://github.com/Chunkzzbro",
+        "demo": "#"
+      }
+    },
+    {
+      "title": "Posture Correction System",
+      "url": "https://github.com/Chunkzzbro",
+      "description": "CV-based posture monitoring using MediaPipe landmarks and SVM classification on 4,700 images.",
+      "metrics": ["76% Accuracy", "~30 FPS Inference"],
+      "tech": ["Python", "MediaPipe", "OpenCV", "scikit-learn"],
+      "category": "Computer Vision",
+      "image": "./assets/images/project-5.png",
+      "links": {
+        "github": "https://github.com/Chunkzzbro",
+        "demo": "#"
+      }
+    },
+    {
+      "title": "MERN Movie Booking",
+      "url": "https://github.com/Chunkzzbro",
+      "description": "Full-stack platform with dynamic seat locking, JWT authentication, and responsive design.",
+      "metrics": ["Dynamic Seat Locking", "Secure Auth"],
+      "tech": ["React", "Node.js", "Express", "MongoDB", "JWT"],
+      "category": "Full Stack",
+      "image": "./assets/images/project-6.png",
+      "links": {
+        "github": "https://github.com/Chunkzzbro",
+        "demo": "#"
+      }
+    },
+    {
+      "title": "LIORA Unity Game",
+      "url": "https://github.com/Chunkzzbro",
+      "description": "2D adventure puzzle platformer with AI pathfinding and modular tilemap-based level design.",
+      "metrics": ["AI Pathfinding", "Physics Mechanics"],
+      "tech": ["Unity", "C#", "Tilemaps"],
+      "category": "Game Dev",
+      "image": "./assets/images/project-7.png",
       "links": {
         "github": "https://github.com/Chunkzzbro",
         "demo": "#"

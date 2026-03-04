@@ -159,6 +159,15 @@ export const populateDOM = (data) => {
             </a>
 
             <p class="project-category editable-section" data-key="projects.${i}.category">${project.category}</p>
+            
+            <div class="project-tech-list">
+              ${project.tech ? (Array.isArray(project.tech) ? project.tech : project.tech.split(',')).map((t, ti) => `
+                <div class="tech-tag-container" style="display: inline-block; margin-right: 6px;">
+                  <span class="tech-tag editable-section" data-key="projects.${i}.tech.${ti}">${t.trim()}</span>
+                </div>
+              `).join('') : ''}
+            </div>
+
             <p class="project-text editable-section" data-key="projects.${i}.description" style="font-size: 13px; color: var(--light-gray-70); margin-top: 5px; text-align: left;">${project.description}</p>
             
             <div class="project-links admin-only-view" style="display: flex; gap: 10px; margin-top: 10px;">

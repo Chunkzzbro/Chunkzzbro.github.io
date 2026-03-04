@@ -98,7 +98,6 @@ const createFloatingLinkBar = () => {
 };
 
 const initLinkHoverListeners = () => {
-  // Listen for hover on project titles, image overlay boxes, and resume link
   const linkTargets = document.querySelectorAll('.project-url-link, .resume-link, .project-image-editable');
   
   linkTargets.forEach(target => {
@@ -154,7 +153,6 @@ const saveLinkUrl = () => {
     const key = activeLinkElement.dataset.key;
     updateDataModel(key, url);
     
-    // Update visual element
     if (activeLinkElement.classList.contains('project-image-editable')) {
         const img = activeLinkElement.nextElementSibling;
         if (img && img.tagName === 'IMG') img.src = url;
@@ -250,7 +248,7 @@ const injectListControls = () => {
     }
   });
 
-  // Project Metrics Add Button
+  // Project Metrics & Tech Add Buttons
   document.querySelectorAll('.project-item').forEach((item, index) => {
     const metricsList = item.querySelector('.project-metrics-list');
     if (metricsList && !metricsList.querySelector('.add-metric-btn')) {
@@ -261,6 +259,17 @@ const injectListControls = () => {
         btn.style.padding = '2px 6px';
         btn.onclick = () => addMetric(index);
         metricsList.appendChild(btn);
+    }
+
+    const techList = item.querySelector('.project-tech-list');
+    if (techList && !techList.querySelector('.add-tech-btn')) {
+        const btn = document.createElement('button');
+        btn.className = 'admin-btn add-tech-btn';
+        btn.innerText = '+ Add Tech';
+        btn.style.fontSize = '9px';
+        btn.style.padding = '2px 6px';
+        btn.onclick = () => addTech(index);
+        techList.appendChild(btn);
     }
   });
 
@@ -295,30 +304,48 @@ const injectListControls = () => {
         delBtn.innerText = '×';
         const metricEl = cont.querySelector('.metric-badge');
         const key = metricEl.dataset.key;
-        delBtn.onclick = () => deleteMetric(key);
+        delBtn.onclick = () => deleteSubItem(key);
+        cont.appendChild(delBtn);
+    }
+  });
+
+  // Tech Delete Buttons
+  document.querySelectorAll('.tech-tag-container').forEach((cont) => {
+    if (!cont.querySelector('.tech-delete-btn')) {
+        const delBtn = document.createElement('button');
+        delBtn.className = 'tech-delete-btn';
+        delBtn.innerText = '×';
+        const techEl = cont.querySelector('.tech-tag');
+        const key = techEl.dataset.key;
+        delBtn.onclick = () => deleteSubItem(key);
         cont.appendChild(delBtn);
     }
   });
 };
 
 const addMetric = (projectIndex) => {
-    if (!currentData.projects[projectIndex].metrics) {
-        currentData.projects[projectIndex].metrics = [];
-    }
+    if (!currentData.projects[projectIndex].metrics) currentData.projects[projectIndex].metrics = [];
     currentData.projects[projectIndex].metrics.push("New Metric: 0%");
     refreshUI();
 };
 
-const deleteMetric = (key) => {
-    const keys = key.split('.'); // projects.0.metrics.1
+const addTech = (projectIndex) => {
+    if (!currentData.projects[projectIndex].tech) currentData.projects[projectIndex].tech = [];
+    currentData.projects[projectIndex].tech.push("New Tech");
+    refreshUI();
+};
+
+const deleteSubItem = (key) => {
+    const keys = key.split('.'); // projects.0.metrics.1 or projects.0.tech.1
     const pIdx = keys[1];
-    const mIdx = keys[3];
-    currentData.projects[pIdx].metrics.splice(mIdx, 1);
+    const subType = keys[2]; // metrics or tech
+    const itemIdx = keys[3];
+    currentData.projects[pIdx][subType].splice(itemIdx, 1);
     refreshUI();
 };
 
 const removeListControls = () => {
-  document.querySelectorAll('.admin-btn, .metric-delete-btn').forEach(btn => btn.remove());
+  document.querySelectorAll('.admin-btn, .metric-delete-btn, .tech-delete-btn').forEach(btn => btn.remove());
 };
 
 const addItem = (key) => {
@@ -328,7 +355,7 @@ const addItem = (key) => {
       url: "#",
       category: "ML Systems", 
       description: "Short description here", 
-      tech: "Tech used", 
+      tech: ["Python"], 
       image: "./assets/images/project-1.jpg",
       metrics: [],
       links: { github: "#", demo: "#" }

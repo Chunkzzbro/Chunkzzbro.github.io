@@ -15,6 +15,7 @@ This file tracks the implementation of logical units. Tasks are crossed off ONLY
 - [x] Implement dynamic project cards with GitHub/Demo links
 - [x] Add Metrics Badges to Project cards
 - [x] Inject 2022-2026 Availability line in Hero
+- [x] Populate full 7-project list with technical metrics and tech stacks
 
 ## 🔐 ADMIN ENGINE (AUTHENTICATION)
 - [ ] Add "Edit Mode" button to sidebar
@@ -36,6 +37,8 @@ This file tracks the implementation of logical units. Tasks are crossed off ONLY
 - [x] Hover-away auto-hide logic for link bar
 - [x] Interactive Image URL editing via hover
 - [x] Add/Delete functionality for Project Metrics
+- [x] Add/Delete functionality for Tech Stack Tags
+- [x] Link navigation disabled in Edit Mode
 
 ## 📄 DOCUMENTATION (MANDATORY)
 - [ ] Populate `PROJECT_OVERVIEW.md`
@@ -48,8 +51,9 @@ This file tracks the implementation of logical units. Tasks are crossed off ONLY
 ---
 
 ## ✅ RECENTLY COMMITTED UNITS
+- (Current): feat: implement full project data population and tech stack management
+- `821649b`: feat: implement advanced project metrics and interactive image editing
 - `50a7eda`: feat: complete transformation into interactive ML Systems portfolio platform
-- (Current): feat: implement advanced project metrics and interactive image editing
 
 ---
 *Last Updated: 2026-03-04*
