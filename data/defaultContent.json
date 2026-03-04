@@ -1,0 +1,151 @@
+{
+  "hero": {
+    "name": "Renjith Anil",
+    "title": "SOFTWARE ENGINEER - AI/ML SYSTEMS & APPLIED INTELLIGENCE",
+    "availability": "Available for SDE / ML Engineer Roles — 2026",
+    "tagline": "Building real-time AI systems, distributed ML pipelines, and production-grade backend integrations.",
+    "location": "VIT Chennai, India",
+    "email": "renjithaniltvm@gmail.com",
+    "resumeLink": "#",
+    "socials": {
+      "github": "https://github.com/Chunkzzbro",
+      "linkedin": "https://linkedin.com/in/renjith-anil"
+    }
+  },
+  "about": {
+    "description": [
+      "I am a Software Engineer specializing in **ML Systems and Applied Intelligence**, with a deep focus on building scalable, production-grade AI infrastructure. I bridge the gap between academic research and real-world deployment by optimizing inference pipelines and parallelizing large-scale model training.",
+      "My core expertise lies in **Distributed Systems for AI**, where I've successfully implemented OpenMPI-based frameworks to reduce training latency by 40%. I thrive on the engineering challenges of low-latency computer vision (~30 FPS) and containerized anomaly detection systems integrated with cloud-native monitoring (Prometheus).",
+      "Beyond model metrics, I prioritize **system reliability and observability**. Whether it's architecting AWS SageMaker workflows or designing secure REST APIs for ML model delivery, I ensure that AI solutions are not just accurate, but robust, monitorable, and scalable.",
+      "I am passionate about building the underlying infrastructure that makes modern AI work at scale, combining strong CS fundamentals with hands-on experience in distributed computing and backend engineering."
+    ],
+    "focusAreas": [
+      {
+        "title": "Scalable ML Systems Architecture",
+        "description": "Designing robust architectures for distributed training and high-throughput inference.",
+        "icon": "./assets/images/icon-dev.svg"
+      },
+      {
+        "title": "Real-Time AI Inference Pipelines",
+        "description": "Optimizing computer vision and NLP models for low-latency, real-time performance.",
+        "icon": "./assets/images/icon-app.svg"
+      },
+      {
+        "title": "Distributed ML Training (MPI)",
+        "description": "Leveraging OpenMPI and distributed frameworks to accelerate large-scale model training.",
+        "icon": "./assets/images/icon-design.svg"
+      },
+      {
+        "title": "ML Monitoring & Observability",
+        "description": "Integrating Prometheus and MLFlow for real-time tracking of model health and performance.",
+        "icon": "./assets/images/icon-photo.svg"
+      }
+    ]
+  },
+  "skills": [
+    {
+      "category": "Core CS",
+      "items": "Data Structures & Algorithms, OOP, Operating Systems, Computer Networks, Databases, Probability & Statistics"
+    },
+    {
+      "category": "Programming",
+      "items": "Python, Java, C++, C, SQL, JavaScript"
+    },
+    {
+      "category": "ML & AI",
+      "items": "Regression, Classification, Autoencoders, Random Forest, CNN Architectures, Distributed Training (MPI), MLFlow"
+    },
+    {
+      "category": "Frameworks",
+      "items": "PyTorch, TensorFlow, Keras, scikit-learn, OpenCV, MediaPipe, FastAPI, Streamlit"
+    },
+    {
+      "category": "Backend",
+      "items": "Node.js, Express.js, REST APIs, JWT, Service Architecture"
+    },
+    {
+      "category": "Cloud & DevOps",
+      "items": "AWS (SageMaker, EC2, S3), Docker, GitHub Actions, Prometheus, Linux"
+    }
+  ],
+  "education": [
+    {
+      "university": "VIT Chennai, India",
+      "degree": "B.Tech Computer Science (AI & ML)",
+      "duration": "2022 — 2026",
+      "impact": "CGPA: 9.49"
+    }
+  ],
+  "experience": [
+    {
+      "company": "Cloud Control Solutions Inc",
+      "role": "AI/ML Intern",
+      "location": "Technopark, Trivandrum",
+      "duration": "July 2023",
+      "bullets": [
+        "Built container-level anomaly detection pipeline using Autoencoders.",
+        "Reduced anomaly detection time by 25% through inference optimization.",
+        "Integrated Prometheus telemetry for real-time monitoring.",
+        "Containerized deployment via Docker for cross-environment stability.",
+        "Documented production ML workflows for engineering adoption."
+      ],
+      "tech": "Python, Keras, scikit-learn, NumPy, Pandas, Prometheus, Docker"
+    }
+  ],
+  "projects": [
+    {
+      "title": "Parallelized Leukemia Detection",
+      "url": "https://github.com/Chunkzzbro",
+      "description": "Distributed CNN-based leukemia classification system using OpenMPI.",
+      "impact": [
+        "40% faster distributed CNN training",
+        "92% validation accuracy",
+        "Springer ICAC 2024 published"
+      ],
+      "tech": "Python, Keras, OpenMPI, MPI4Py",
+      "category": "ML Systems",
+      "image": "./assets/images/project-1.jpg",
+      "links": {
+        "github": "https://github.com/Chunkzzbro",
+        "demo": "#"
+      }
+    },
+    {
+      "title": "FaceMatch AI",
+      "url": "https://github.com/Chunkzzbro",
+      "description": "Real-time face detection, embedding, and similarity ranking pipeline.",
+      "impact": [
+        "92% recognition accuracy",
+        "RetinaFace + ArcFace integration",
+        "Real-time similarity ranking engine"
+      ],
+      "tech": "Python, OpenCV, ArcFace, Streamlit",
+      "category": "Computer Vision",
+      "image": "./assets/images/project-2.png",
+      "links": {
+        "github": "https://github.com/Chunkzzbro",
+        "demo": "#"
+      }
+    }
+  ],
+  "achievements": [
+    {
+      "title": "Research Paper Author — Springer ICAC 2024",
+      "description": "Parallelized Leukemia Detection using CNNs and OpenMPI."
+    },
+    {
+      "title": "Co-Lead — Data Science Club, VIT Chennai",
+      "description": "Organizing technical workshops and hackathons for 200+ members."
+    }
+  ],
+  "certifications": [
+    {
+      "title": "AWS Solution Architect Coursework",
+      "description": "Completed extensive training on AWS cloud architecture."
+    },
+    {
+      "title": "MERN Full-Stack Developer",
+      "description": "Certified by Ethnus Consultancy Services."
+    }
+  ]
+}
