@@ -1,13 +1,26 @@
 'use strict';
 
 /**
- * Content Manager - Defensive Version
- * Handles data fetching and DOM population with fail-safes
+ * Content Manager
+ *
+ * The data bridge between storage and the DOM.
+ *
+ * Data priority:
+ *  1. localStorage (key: portfolioContent_v1) — user's saved edits
+ *  2. data/defaultContent.json — factory baseline
+ *
+ * populateDOM() reads the data object and injects it into the HTML structure.
+ * Every injected element gets a `data-key` attribute mapping back to the JSON path,
+ * enabling the editor to read values back out when saving.
  */
 
 const STORAGE_KEY = 'portfolioContent_v1';
 const DATA_PATH = './data/defaultContent.json';
 
+/**
+ * Load content: returns saved edits from localStorage if available,
+ * otherwise fetches the default JSON file.
+ */
 export const loadContent = async () => {
   try {
     const storedContent = localStorage.getItem(STORAGE_KEY);
@@ -20,14 +33,21 @@ export const loadContent = async () => {
   }
 };
 
+/** Persist the current data object to localStorage. */
 export const saveContent = (content) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
 };
 
+/**
+ * Populate the entire DOM from a data object.
+ *
+ * Each section is wrapped in its own try/catch so a failure in one
+ * (e.g. missing field) doesn't break the rest of the page.
+ */
 export const populateDOM = (data) => {
   if (!data) return;
 
-  // Helper to safely set text and make it editable
+  // Helper: safely set text content and mark element as editable
   const setEditableText = (selector, text, key) => {
     const el = document.querySelector(selector);
     if (el) {
@@ -37,27 +57,27 @@ export const populateDOM = (data) => {
     }
   };
 
+  // --- Hero / Sidebar ---
   try {
-    // Hero Section
     setEditableText('.name', data.hero?.name, 'hero.name');
     setEditableText('.title', data.hero?.title, 'hero.title');
     setEditableText('.availability', data.hero?.availability, 'hero.availability');
     setEditableText('.tagline', data.hero?.tagline, 'hero.tagline');
-    
+
     const avatarImg = document.querySelector('.avatar-box img');
     if (avatarImg && data.hero?.avatar) {
         avatarImg.src = data.hero.avatar;
         avatarImg.classList.add('sidebar-avatar-editable');
         avatarImg.dataset.key = 'hero.avatar';
     }
-    
+
     const resumeLink = document.querySelector('.resume-link');
     if (resumeLink && data.hero?.resumeLink) {
         resumeLink.href = data.hero.resumeLink;
         resumeLink.dataset.key = 'hero.resumeLink';
     }
 
-    // Contacts
+    // Contact details
     const contacts = document.querySelectorAll('.contact-item');
     if (contacts[0] && data.hero?.email) {
       const link = contacts[0].querySelector('.contact-link');
@@ -77,6 +97,7 @@ export const populateDOM = (data) => {
         }
     }
 
+    // Social links
     const socialLinks = document.querySelectorAll('.social-link');
     if (socialLinks.length >= 2 && data.hero?.socials) {
       socialLinks[0].href = data.hero.socials.github || "#";
@@ -88,6 +109,7 @@ export const populateDOM = (data) => {
     }
   } catch (e) { console.error("Hero population failed:", e); }
 
+  // --- About section ---
   try {
     const aboutText = document.querySelector('.about-text');
     if (aboutText && data.about?.description) {
@@ -97,6 +119,7 @@ export const populateDOM = (data) => {
     }
   } catch (e) { console.error("About population failed:", e); }
 
+  // --- Focus Areas (service cards) ---
   try {
     const focusList = document.querySelector('.service-list');
     if (focusList && data.about?.focusAreas) {
@@ -114,8 +137,11 @@ export const populateDOM = (data) => {
     }
   } catch (e) { console.error("Focus areas population failed:", e); }
 
+  // --- Resume: Education & Experience timelines ---
   try {
     const resumeSections = document.querySelectorAll('.timeline-list');
+
+    // Education
     if (resumeSections[0] && data.education) {
       resumeSections[0].innerHTML = data.education.map((edu, i) => `
         <li class="timeline-item">
@@ -126,13 +152,15 @@ export const populateDOM = (data) => {
         </li>
       `).join('');
     }
+
+    // Experience (with bullet points)
     if (resumeSections[1] && data.experience) {
       resumeSections[1].innerHTML = data.experience.map((exp, i) => `
         <li class="timeline-item">
           <h4 class="h4 timeline-item-title editable-section" data-key="experience.${i}.company">${exp.company}</h4>
           <span>
-            <span class="editable-section" data-key="experience.${i}.duration" style="display: inline;">${exp.duration}</span> 
-            — 
+            <span class="editable-section" data-key="experience.${i}.duration" style="display: inline;">${exp.duration}</span>
+            —
             <span class="editable-section" data-key="experience.${i}.role" style="display: inline;">${exp.role}</span>
           </span>
           <ul class="experience-bullets" style="margin-top: 10px; list-style: disc; padding-left: 20px;">
@@ -145,6 +173,7 @@ export const populateDOM = (data) => {
     }
   } catch (e) { console.error("Resume population failed:", e); }
 
+  // --- Skills ---
   try {
     const skillsList = document.querySelector('.skills-list');
     if (skillsList && data.skills) {
@@ -159,7 +188,9 @@ export const populateDOM = (data) => {
     }
   } catch (e) { console.error("Skills population failed:", e); }
 
+  // --- Projects (with category filter tabs) ---
   try {
+    // Rebuild filter tabs from projectCategories array
     const filterList = document.querySelector('.filter-list');
     if (filterList && data.projectCategories) {
         const cats = ["All", ...data.projectCategories];
@@ -170,6 +201,7 @@ export const populateDOM = (data) => {
         `).join('');
     }
 
+    // Build project cards — each card gets data-category for filtering (pipe-separated)
     const projectList = document.querySelector('.project-list');
     if (projectList && data.projects) {
       projectList.innerHTML = data.projects.map((project, i) => {
@@ -216,6 +248,7 @@ export const populateDOM = (data) => {
     }
   } catch (e) { console.error("Projects population failed:", e); }
 
+  // --- Achievements & Certifications ---
   try {
     const achievementList = document.querySelector('.achievements-list');
     if (achievementList && data.achievements) {

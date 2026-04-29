@@ -1,0 +1,16 @@
+# Internal working documents (kept locally, not pushed to GitHub)
+GEMINI.md
+project_state.md
+docs/CHANGELOG.md
+docs/DEV_LOG.md
+docs/FEATURE_ROADMAP.md
+docs/PROJECT_OVERVIEW.md
+
+# OS generated files
+Thumbs.db
+.DS_Store
+
+# Editor / tooling local state
+.claude/
+.vscode/
+.idea/

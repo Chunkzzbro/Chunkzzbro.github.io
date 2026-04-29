@@ -9,24 +9,15 @@
   <meta name="description" content="Software Engineer specializing in ML Systems, Distributed Training, and Real-Time AI Inference. Building production-grade AI pipelines.">
   <meta name="keywords" content="Machine Learning Systems Engineer, Distributed AI, Production ML, Computer Vision, Backend ML Engineer">
 
-  <!-- Open Graph -->
+  <!-- Open Graph meta tags for social media link previews -->
   <meta property="og:title" content="Renjith Anil | ML Systems Engineer">
   <meta property="og:description" content="Real-time AI systems, distributed ML training, and production-grade deployment workflows.">
   <meta property="og:type" content="website">
 
-  <!--
-    - favicon
-  -->
   <link rel="shortcut icon" href="./assets/images/logo.ico" type="image/x-icon">
-
-  <!--
-    - custom css link
-  -->
   <link rel="stylesheet" href="./assets/css/style.css">
 
-  <!--
-    - google font link
-  -->
+  <!-- Google Fonts — Poppins is used site-wide -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -34,14 +25,12 @@
 
 <body>
 
-  <!--
-    - #MAIN
-  -->
-
   <main>
 
     <!--
-      - #SIDEBAR
+      SIDEBAR — Contains avatar, name, title, contact info, social links,
+      and the "Edit Mode" / "View Resume" action buttons.
+      All text here is dynamically overwritten by contentManager.js on load.
     -->
 
     <aside class="sidebar" data-sidebar>
@@ -49,6 +38,7 @@
       <div class="sidebar-info">
 
         <figure class="avatar-box">
+          <!-- Fallback src; overridden at runtime from defaultContent.json -->
           <img src="./assets/images/my-avatar.png" alt="Renjith Anil" width="80">
         </figure>
 
@@ -64,16 +54,17 @@
 
         <button class="info_more-btn" data-sidebar-btn>
           <span>Show Contacts</span>
-
           <ion-icon name="chevron-down"></ion-icon>
         </button>
 
       </div>
 
+      <!-- Expanded sidebar section — visible after "Show Contacts" click -->
       <div class="sidebar-info_more">
 
         <div class="separator"></div>
 
+        <!-- Admin + Resume buttons -->
         <div class="hero-btns" style="display: flex; justify-content: center; margin-bottom: 20px; flex-direction: column; align-items: center; gap: 10px;">
           <button class="form-btn" id="edit-mode-trigger" style="padding: 10px 20px; width: 100%; border: 1px solid var(--accent-blue); background: transparent; color: var(--accent-blue);">Edit Mode</button>
           <a href="#" class="form-btn resume-link" target="_blank" data-key="hero.resumeLink" style="padding: 10px 20px; width: 100%; text-align: center; text-decoration: none; color: white;">View Resume</a>
@@ -82,31 +73,23 @@
         <ul class="contacts-list">
 
           <li class="contact-item">
-
             <div class="icon-box">
               <ion-icon name="mail-outline"></ion-icon>
             </div>
-
             <div class="contact-info">
               <p class="contact-title">Email</p>
-
               <a href="mailto:renjithaniltvm@gmail.com" class="contact-link">renjithaniltvm@gmail.com</a>
             </div>
-
           </li>
 
           <li class="contact-item">
-
             <div class="icon-box">
               <ion-icon name="location-outline"></ion-icon>
             </div>
-
             <div class="contact-info">
               <p class="contact-title">Location</p>
-
               <address>VIT Chennai, India</address>
             </div>
-
           </li>
 
         </ul>
@@ -114,326 +97,215 @@
         <div class="separator"></div>
 
         <ul class="social-list">
-
           <li class="social-item">
             <a href="https://github.com/Chunkzzbro" class="social-link" target="_blank" rel="noopener noreferrer">
               <ion-icon name="logo-github"></ion-icon>
             </a>
           </li>
-
           <li class="social-item">
             <a href="https://linkedin.com/in/renjith-anil" class="social-link" target="_blank" rel="noopener noreferrer">
               <ion-icon name="logo-linkedin"></ion-icon>
             </a>
           </li>
-
         </ul>
 
       </div>
 
     </aside>
 
-
-
-
-
     <!--
-      - #main-content
+      MAIN CONTENT — Houses all page sections (About, Resume, Projects, etc.).
+      Navigation tabs switch visibility via ui.js; content is populated by contentManager.js.
     -->
 
     <div class="main-content">
 
-      <!--
-        - #NAVBAR
-      -->
-
+      <!-- Tab navigation — clicking a tab shows the matching [data-page] article -->
       <nav class="navbar">
-
         <ul class="navbar-list">
-
           <li class="navbar-item">
-            <button class="navbar-link  active" data-nav-link>About</button>
+            <button class="navbar-link active" data-nav-link>About</button>
           </li>
-
           <li class="navbar-item">
             <button class="navbar-link" data-nav-link>Resume</button>
           </li>
-
           <li class="navbar-item">
             <button class="navbar-link" data-nav-link>Projects</button>
           </li>
-
           <li class="navbar-item">
             <button class="navbar-link" data-nav-link>Achievements</button>
           </li>
-
           <li class="navbar-item">
             <button class="navbar-link" data-nav-link>Contact</button>
           </li>
-
         </ul>
-
       </nav>
 
-
-
-
-
-      <!--
-        - #ABOUT
-      -->
-
-      <article class="about  active" data-page="about">
-
+      <!-- ABOUT — Bio paragraphs and focus areas, dynamically populated -->
+      <article class="about active" data-page="about">
         <header>
           <h2 class="h2 article-title">About Me</h2>
         </header>
 
         <section class="about-text">
-          <!-- Dynamically populated from contentManager.js -->
+          <!-- Populated from data.about.description[] by contentManager.js -->
         </section>
-
-        <!--
-          - service
-        -->
 
         <section class="service">
-
           <h3 class="h3 service-title">Primary Focus Areas</h3>
-
           <ul class="service-list">
-            <!-- Dynamically populated -->
+            <!-- Populated from data.about.focusAreas[] by contentManager.js -->
           </ul>
-
         </section>
-
       </article>
 
-
-
-
-
-      <!--
-        - #RESUME
-      -->
-
+      <!-- RESUME — Education, Experience, and Skills sections -->
       <article class="resume" data-page="resume">
-
         <header>
           <h2 class="h2 article-title">Resume</h2>
         </header>
 
+        <!-- Education timeline — populated from data.education[] -->
         <section class="timeline">
-
           <div class="title-wrapper">
             <div class="icon-box">
               <ion-icon name="book-outline"></ion-icon>
             </div>
-
             <h3 class="h3">Education</h3>
           </div>
-
           <ol class="timeline-list">
-
             <li class="timeline-item">
-
               <h4 class="h4 timeline-item-title editable-section" data-key="education.university">VIT Chennai, India</h4>
-
               <span>2021 — 2025 (Expected)</span>
-
               <p class="timeline-text editable-section" data-key="education.degree">
                 B.Tech Computer Science (Specialization in AI & ML). CGPA: 9.49.
               </p>
-
             </li>
-
           </ol>
-
         </section>
 
+        <!-- Experience timeline — populated from data.experience[] -->
         <section class="timeline">
-
           <div class="title-wrapper">
             <div class="icon-box">
               <ion-icon name="book-outline"></ion-icon>
             </div>
-
             <h3 class="h3">Experience</h3>
           </div>
-
           <ol class="timeline-list">
-
             <li class="timeline-item">
-
               <h4 class="h4 timeline-item-title editable-section" data-key="experience.company">Cloud Control Solutions Inc</h4>
-
               <span>July 2023 — AI/ML Intern</span>
-
               <p class="timeline-text editable-section" data-key="experience.description">
                 Developed a container-level anomaly detection pipeline using Autoencoders on CPU, memory, and disk telemetry. Improved anomaly identification speed by 25%. Integrated ML outputs into Prometheus for real-time monitoring.
               </p>
-
             </li>
-
           </ol>
-
         </section>
 
+        <!-- Skills grid — populated from data.skills[] -->
         <section class="skill">
-
           <h3 class="h3 skills-title">Technical Skills</h3>
-
           <ul class="skills-list content-card">
-
             <li class="skills-item">
               <div class="title-wrapper">
                 <h5 class="h5">Machine Learning & AI</h5>
               </div>
               <p class="timeline-text editable-section" data-key="skills.ml">PyTorch, TensorFlow, Keras, scikit-learn, OpenCV, MediaPipe, MPI, MLFlow</p>
             </li>
-
             <li class="skills-item">
               <div class="title-wrapper">
                 <h5 class="h5">Cloud & DevOps</h5>
               </div>
               <p class="timeline-text editable-section" data-key="skills.devops">AWS (SageMaker, EC2, S3), Docker, GitHub Actions, Prometheus, Linux, Git</p>
             </li>
-
             <li class="skills-item">
               <div class="title-wrapper">
                 <h5 class="h5">Programming & Backend</h5>
               </div>
               <p class="timeline-text editable-section" data-key="skills.backend">Python, Java, C++, SQL, Node.js, Express, REST API, MongoDB</p>
             </li>
-
           </ul>
-
         </section>
-
       </article>
 
-
-
-
-
-      <!--
-        - #PORTFOLIO
-      -->
-
+      <!-- PROJECTS — Filterable project cards with category tabs -->
       <article class="portfolio" data-page="projects">
-
         <header>
           <h2 class="h2 article-title">Projects</h2>
         </header>
 
         <section class="projects">
 
+          <!-- Desktop filter tabs — rebuilt dynamically from data.projectCategories[] -->
           <ul class="filter-list">
-
             <li class="filter-item">
               <button class="active" data-filter-btn>All</button>
             </li>
-
             <li class="filter-item">
               <button data-filter-btn>ML Systems</button>
             </li>
-
             <li class="filter-item">
               <button data-filter-btn>Computer Vision</button>
             </li>
-
             <li class="filter-item">
               <button data-filter-btn>Full Stack</button>
             </li>
-
           </ul>
 
+          <!-- Mobile dropdown filter — mirrors the desktop tabs above -->
           <div class="filter-select-box">
-
             <button class="filter-select" data-select>
-
               <div class="select-value" data-selecct-value>Select category</div>
-
               <div class="select-icon">
                 <ion-icon name="chevron-down"></ion-icon>
               </div>
-
             </button>
-
             <ul class="select-list">
-
               <li class="select-item">
                 <button data-select-item>All</button>
               </li>
-
               <li class="select-item">
                 <button data-select-item>ML Systems</button>
               </li>
-
               <li class="select-item">
                 <button data-select-item>Computer Vision</button>
               </li>
-
               <li class="select-item">
                 <button data-select-item>Full Stack</button>
               </li>
-
             </ul>
-
           </div>
 
-          <ul class="project-list">
-
-            <!-- Projects will be dynamically loaded from contentManager.js -->
-
-          </ul>
+          <!-- Project cards — populated from data.projects[] by contentManager.js -->
+          <ul class="project-list"></ul>
 
         </section>
-
       </article>
 
-
-
-
-
-      <!--
-        - #ACHIEVEMENTS
-      -->
-
+      <!-- ACHIEVEMENTS & CERTIFICATIONS -->
       <article class="blog" data-page="achievements">
-
         <header>
           <h2 class="h2 article-title">Achievements</h2>
         </header>
-
         <section class="blog-posts">
           <ul class="blog-posts-list achievements-list">
-            <!-- Dynamically populated -->
+            <!-- Populated from data.achievements[] -->
           </ul>
         </section>
 
         <header style="margin-top: 30px;">
           <h2 class="h2 article-title">Certifications</h2>
         </header>
-
         <section class="blog-posts">
           <ul class="blog-posts-list certifications-list">
-            <!-- Dynamically populated -->
+            <!-- Populated from data.certifications[] -->
           </ul>
         </section>
-
       </article>
 
-
-
-
-
-      <!--
-        - #CONTACT
-      -->
-
+      <!-- CONTACT — Embedded map and contact form -->
       <article class="contact" data-page="contact">
-
         <header>
           <h2 class="h2 article-title">Contact</h2>
         </header>
@@ -447,47 +319,29 @@
         </section>
 
         <section class="contact-form">
-
           <h3 class="h3 form-title">Contact Form</h3>
-
           <form action="#" class="form" data-form>
-
             <div class="input-wrapper">
               <input type="text" name="fullname" class="form-input" placeholder="Full name" required data-form-input>
-
               <input type="email" name="email" class="form-input" placeholder="Email address" required data-form-input>
             </div>
-
             <textarea name="message" class="form-input" placeholder="Your Message" required data-form-input></textarea>
-
             <button class="form-btn" type="submit" disabled data-form-btn>
               <ion-icon name="paper-plane"></ion-icon>
               <span>Send Message</span>
             </button>
-
           </form>
-
         </section>
-
       </article>
 
     </div>
 
   </main>
 
-
-
-
-
-
-  <!--
-    - custom js link
-  -->
+  <!-- Application entry point — loads modular JS engine -->
   <script type="module" src="./assets/js/script.js"></script>
 
-  <!--
-    - ionicon link
-  -->
+  <!-- Ionicons — icon library used for UI icons throughout the site -->
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 

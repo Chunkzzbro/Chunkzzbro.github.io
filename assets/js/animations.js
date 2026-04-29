@@ -2,13 +2,15 @@
 
 /**
  * Animations Controller
- * Handles subtle entrance animations and transitions
+ *
+ * Adds a subtle fade-in + slide-up transition whenever a page section
+ * becomes active (i.e. when a navbar tab is clicked).
+ * Uses a MutationObserver to watch for class changes on [data-page] articles.
  */
 
 export const initAnimations = () => {
   const pages = document.querySelectorAll('[data-page]');
-  
-  // Example: Simple fade-in for active sections
+
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.attributeName === 'class') {
