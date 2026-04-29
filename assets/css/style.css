@@ -1406,6 +1406,15 @@ body.editing-enabled .focus-icon-editable:hover {
   font-weight: var(--fw-300);
 }
 
+.project-text {
+  color: var(--white-2);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-300);
+  line-height: 1.6;
+  margin-left: 10px;
+  margin-top: 8px;
+}
+
 
 
 
